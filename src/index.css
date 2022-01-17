@@ -1,0 +1,59 @@
+* {
+  box-sizing: content-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+main {
+  padding: 1rem;
+}
+
+#board {
+  display: flex;
+}
+
+#board .board-table {
+  border: 0.125rem solid black;
+  padding: 1rem;
+}
+
+#board .board-table td button {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  line-height: 1rem;
+  text-align: center;
+}
+
+#board .board-table td button.selected {
+  background-color: cadetblue;
+}
+
+#board .board-table td button.completed {
+  background-color: olivedrab;
+  color: white;
+}
+
+#board .board-table td button.completed.selected {
+  background-color: seagreen;
+}
+
+#board .word-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  list-style: none;
+}
+
+#board .word-list li.completed {
+  color: olivedrab;
+  text-decoration: line-through;
+}
