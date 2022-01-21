@@ -6,8 +6,13 @@ module.exports = {
   mount: {
     src: "/",
   },
-  plugins: [],
+  plugins: ["@snowpack/plugin-postcss"],
   packageOptions: {},
   devOptions: {},
   buildOptions: {},
+  optimize: {
+    bundle: true,
+    minify: true,
+    target: "es2018",
+  },
 };
