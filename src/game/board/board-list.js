@@ -1,9 +1,9 @@
-export const createBoardList = (wordList) => {
+export const createBoardList = (words) => {
   // Create the HTML to render the word list
   const list = document.createElement("ul");
   list.classList.add("word-list");
 
-  wordList.forEach((word) => {
+  words.forEach((word) => {
     const listItem = document.createElement("li");
     listItem.innerHTML = word.toUpperCase();
     listItem.setAttribute("data-word", word.toLowerCase());

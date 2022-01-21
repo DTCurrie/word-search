@@ -1,91 +1,37 @@
 import { getAnimals } from "../../data/animals";
 
-import { selectCellEvent } from "../cell";
 import { createGrid } from "../grid";
 import { shuffle } from "../shuffle";
 import directions from "../directions";
 
-import { createBoardList } from "./board-list";
-import { createBoardTable } from "./board-table";
+export const createBoard = (width, height) => {
+  const wordList = shuffle(getAnimals(width > height ? height : width)).map(
+    (animal) => animal.toLowerCase()
+  );
 
-export const createBoard = (scale) => {
-  const initialGrid = createGrid(scale, scale);
+  const initialize = () => {
+    const initialGrid = createGrid(width, height);
+    const words = [];
+    const wordCells = {};
+    const scale = (width + height) / 2;
+    const isScaleEven = scale % 2 === 0;
+    const limit = isScaleEven ? scale : scale - 1;
 
-  const wordList = shuffle(getAnimals(scale))
-    .slice(0, Math.floor((initialGrid.width + initialGrid.height) / 2))
-    .map((animal) => animal.toLowerCase());
+    // Create a stack to record the state of each loop (for referencing back)
+    const stack = [
+      {
+        grid: initialGrid,
+        word: wordList.shift(),
+        directions: shuffle(Object.values(directions)),
+        positions: shuffle(initialGrid.getCells()),
+      },
+    ];
 
-  const words = shuffle(wordList);
-  const completedWords = wordList.reduce((map, word) => {
-    map[word.toLowerCase()] = false;
-    return map;
-  }, {});
-
-  const wordCells = {};
-
-  // Create a stack to record the state of each loop (for referencing back)
-  const stack = [
-    {
-      grid: initialGrid,
-      word: words.shift(),
-      directions: shuffle(Object.values(directions)),
-      positions: shuffle(initialGrid.getCells()),
-    },
-  ];
-
-  const checkForWin = (grid, cell) => {
-    const selectedCells = grid.selectedCells();
-
-    const hasSelectedWord = cell.words.reduce((value, word) => {
-      if (!value) {
-        const cells = wordCells[word];
-
-        if (cells.length === selectedCells.length) {
-          for (let i = 0; i < selectedCells.length; i++) {
-            const selectedCell = selectedCells[i];
-            const selectedWordCell = cells[i];
-
-            if (selectedCell.isAt(selectedWordCell)) {
-              return true;
-            }
-          }
-        }
-      }
-
-      return value;
-    }, false);
-
-    if (hasSelectedWord) {
-      selectedCells.forEach(({ button }) => {
-        button.classList.add("completed");
-      });
-
-      const word = selectedCells
-        .reduce((word, current) => {
-          return `${word}${current.value()}`;
-        }, "")
-        .toLowerCase();
-
-      document.querySelector(`[data-word=${word}]`).classList.add("completed");
-
-      completedWords[word] = true;
-
-      selectedCells.forEach((cell) => cell.button.classList.remove("selected"));
-      grid.resetSelectedCells();
-
-      if (!Object.values(completedWords).includes(false)) {
-        console.log("game is completed!");
-      }
-    }
-  };
-
-  while (true) {
-    try {
-      // Get the current loop off the stack and throw an error if no solution is possible
+    while (wordList.length) {
       const current = stack[stack.length - 1];
 
       if (!current) {
-        return createBoard();
+        throw new Error("Unable to create board!");
       }
 
       // get the current direction to try
@@ -103,8 +49,7 @@ export const createBoard = (scale) => {
       let position = current.positions.pop();
 
       if (!position) {
-        // If there are no more positions, put the current word back in the list of words and backtrack
-        // to the last loop in the stack
+        // If there are no more positions, skip the current word and backtrack to the last loop in the stack
         words.unshift(current.word);
         stack.pop();
       } else {
@@ -117,42 +62,39 @@ export const createBoard = (scale) => {
 
         // If tryWord succeeds, it will return the next grid with the word placed on it; otherwise null
         if (placedCells !== null) {
+          // Store the word
+          words.push(current.word);
+
           // Store the placed cells to check for complete words
           wordCells[current.word.toLowerCase()] = placedCells;
-
-          if (words.length > 0) {
-            // There are more words, so add another loop to the stack and continue
-            const nextLoop = {
-              grid: current.grid,
-              word: words.shift(),
-              directions: shuffle(Object.values(directions)),
-              positions: shuffle(current.grid.getCells()),
-            };
-
-            stack.push(nextLoop);
-          } else {
-            // All the words have been placed!
-            break;
-          }
         }
       }
-    } catch (error) {
-      console.error(error);
-      break;
+
+      if (words.length === limit) {
+        // All the words have been placed!
+        break;
+      }
+
+      // We need to place more words, so add another loop to the stack and continue
+      const nextLoop = {
+        grid: current.grid,
+        word: wordList.shift(),
+        directions: shuffle(Object.values(directions)),
+        positions: shuffle(current.grid.getCells()),
+      };
+
+      stack.push(nextLoop);
     }
-  }
 
-  const grid = stack[stack.length - 1].grid;
+    const { grid } = stack.pop();
+    return { grid, words, wordCells };
+  };
 
-  addEventListener(selectCellEvent, (e) =>
-    checkForWin(grid, grid.cells[e.detail.x][e.detail.y])
-  );
+  const board = document.createElement("div");
+  board.classList.add("board");
 
   return {
-    grid,
-    list: createBoardList(wordList),
-    table: createBoardTable(grid),
-    wordCells,
-    wordList,
+    board,
+    initialize,
   };
 };

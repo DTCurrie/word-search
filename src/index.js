@@ -1,8 +1,6 @@
-import { createBoard } from "./game/board/board";
+import { screen } from "./game/screen";
+import { createStateMachine } from "./game/state-machine";
+import { initialState } from "./game/states/initial.state";
 
-(async () => {
-  const { list, table } = await createBoard(10);
-
-  document.querySelector("#board").append(table);
-  document.querySelector("#board").append(list);
-})();
+const stateMachine = createStateMachine();
+stateMachine.transition(initialState({ screen: screen(), stateMachine }));
