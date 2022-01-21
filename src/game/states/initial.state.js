@@ -7,7 +7,7 @@ export const initialState = ({ screen, stateMachine }) =>
     stateMachine,
     onEnter: () => {
       const message = document.createElement("p");
-      message.innerHTML = "Press start to begin!";
+      message.innerHTML = "Press the start button to begin!";
       message.classList.add("message");
       screen.append(message);
 

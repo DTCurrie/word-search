@@ -15,7 +15,7 @@ export const startState = ({ screen, stateMachine }) =>
       message.classList.add("message");
       screen.append(message);
 
-      const { board, initialize } = createBoard(16, 10);
+      const { board, initialize } = createBoard(10, 10);
       const { grid, words, wordCells } = initialize();
       const list = createBoardList(words);
       const table = createBoardTable(grid);

@@ -52,14 +52,16 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 #console {
   display: flex;
   flex-direction: column;
-  width: 37.5rem;
-  height: 42rem;
+  width: 21.5rem;
+  height: 40rem;
   border: 0.25rem solid var(--console-bg--dark);
   border-radius: 1rem;
   background-color: var(--console-bg);
@@ -70,7 +72,7 @@ main {
   margin: 0;
   padding: 0.5rem 0;
   font-weight: 400;
-  font-size: 2.25rem;
+  font-size: 1.25rem;
   text-align: center;
   color: var(--console-color);
 }
@@ -78,8 +80,8 @@ main {
 #screenWrapper {
   display: flex;
   position: relative;
-  width: 32rem;
-  height: 32rem;
+  width: 20rem;
+  height: 31rem;
   margin: 0 auto;
 }
 
@@ -98,41 +100,41 @@ main {
 #screenBgX:before,
 #screenBgX:after {
   top: 0;
-  border-top: 16rem solid transparent;
-  border-bottom: 16rem solid transparent;
+  border-top: 15.5rem solid transparent;
+  border-bottom: 15.5rem solid transparent;
 }
 
 #screenBgX:before {
   left: 0;
-  border-left: 16rem solid var(--console-bg--dark);
+  border-left: 15.5rem solid var(--console-bg--dark);
 }
 
 #screenBgX:after {
   right: 0;
-  border-right: 16rem solid var(--console-bg--dark);
+  border-right: 15.5rem solid var(--console-bg--dark);
 }
 
 #screenBgY:before,
 #screenBgY:after {
   left: 0;
-  border-left: 16rem solid transparent;
-  border-right: 16rem solid transparent;
+  border-left: 10rem solid transparent;
+  border-right: 10rem solid transparent;
 }
 
 #screenBgY:before {
   top: 0;
-  border-top: 16rem solid var(--console-bg--light);
+  border-top: 15.5rem solid var(--console-bg--light);
 }
 
 #screenBgY:after {
   bottom: 0;
-  border-bottom: 16rem solid var(--console-bg--light);
+  border-bottom: 15.5rem solid var(--console-bg--light);
 }
 
 #screen {
   position: relative;
   display: flex;
-  width: 30rem;
+  width: 19rem;
   height: 30rem;
   margin: auto;
   padding: 0.25rem;
@@ -144,7 +146,6 @@ main {
 #screen .message {
   width: 100%;
   margin: 0;
-  font-size: 2rem;
   text-align: center;
   align-self: center;
   color: var(--screen-color);
@@ -170,6 +171,7 @@ main {
   line-height: 1rem;
   text-align: center;
   background-color: var(--board-btn-bg);
+  color: var(--screen-color);
 }
 
 .board .board-table td button:hover:not(.selected):not(.completed) {
@@ -196,11 +198,12 @@ main {
   list-style: none;
   max-height: 11rem;
   border-top: 1px solid black;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
 }
 
 .board .word-list li {
-  padding: 0.25rem 0;
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
   text-align: center;
 }
 
@@ -213,14 +216,14 @@ main {
   display: flex;
   flex-grow: 1;
   width: 100%;
-  padding: 1rem;
+  padding: 0.5rem;
   align-items: center;
   justify-content: center;
 }
 
 #startButton {
   padding: 0.5rem 0.25rem;
-  font-size: 2rem;
+  font-size: 1rem;
   border: 0.25rem solid var(--button-border);
   box-shadow: 0.25rem 0.25rem var(--screen-color);
   background-color: var(--button-bg);
@@ -237,6 +240,7 @@ main {
 }
 
 #linkWrapper {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
   color: var(--console-color);
 }
